@@ -1,0 +1,82 @@
+{
+  "eurocv": {
+    "foto":  "gajoLindo.jpg",
+    "desiredEmploy": "Software Engineer",
+    "personalInfo": {
+      "name": {
+        "lastname": "Mendes",
+        "firstname": "José"
+      },
+      "address": {
+        "street": "Rua 2",
+        "cp": "4820-840",
+        "local": "Fafe",
+        "country": "Portugal"
+      },
+      "contact": {
+        "phone": {
+          "countryprefix": "351",
+          "number": "912345678"
+        },
+        "fax": {
+          "countryprefix": "351",
+          "number": "253590522"
+        },
+        "email": [
+          {
+            "type": "Professional",
+            "value": "mendes.j@ua.pt"
+          },
+          {
+            "type": "Personal",
+            "value": "zepedrosmendes@gmail.com"
+          }
+        ]
+      },
+      "nacionality": "Portuguese",
+      "birthdate": {
+        "day": "19",
+        "month": "August",
+        "year": "2003"
+      },
+      "gender": "Male"
+    },
+    "workexperience": {
+      "position": {
+        "dates": {
+          "start": {
+            "month": "Junho",
+            "year": "2024"
+          },
+          "end": {
+            "month": "Setembro",
+            "year": "2024"
+          }
+        },
+        "occupation": "None",
+        "activities": {
+          "activity": [
+            {
+              "designation": "Web Development",
+              "time": "1 year"
+            }
+          ]
+        },
+        "employer": {
+          "name": "DETI - Universidade de Aveiro",
+          "address": {
+            "street": "Campus Universitário de Santiago",
+            "cp": "3810",
+            "local": "Aveiro",
+            "country": "Portugal"
+          },
+          "contact": {
+            "www": "www.ua.pt",
+            "email": "ua@ua.pt"
+          }
+        },
+        "businessSector": "Education"
+      }
+    }
+  }
+}
