@@ -8,7 +8,6 @@ from django.http import HttpResponse
 
 # Create your views here.
 def home(request, num):
-    print(os.path.join(STATIC_DIR, 'content/eurocv{}.json'.format(num)))
     if os.path.isfile(os.path.join(STATIC_DIR, 'content/eurocv{}.json'.format(num))):
         with open(os.path.join(STATIC_DIR, 'content/eurocv{}.json'.format(num)), 'r') as json_file:
             data = json.load(json_file)
