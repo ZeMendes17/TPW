@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>List of Titles</title>
+    <title>Books</title>
 </head>
 <body>
-<h1>List of Titles</h1>
+<h1>Books</h1>
 {% for book in books %}
     <a href="{% url 'book' book.id %}">{{ book.title }}</a></br>
 {% endfor %}

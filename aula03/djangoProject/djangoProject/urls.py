@@ -20,6 +20,12 @@ from app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('listTitles/', views.listTitles, name='listTitles'),
+    path('books/', views.books, name='books'),
     path('book/<int:book_id>/', views.book, name='book'),
+    path('authors/', views.authors, name='authors'),
+    path('author/<int:author_id>/', views.author, name='author'),
+    path('publishers/', views.publishers, name='publishers'),
+    path('publisher/<int:publisher_id>/', views.publisher, name='publisher'),
+    path('booksByAuthor/<int:author_id>/', views.booksByAuthor, name='booksByAuthor'),
+    path('authorsByPublisher/<int:publisher_id>/', views.authorsByPublisher, name='authorsByPublisher'),
 ]
