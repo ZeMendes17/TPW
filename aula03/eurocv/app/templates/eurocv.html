@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+
+    </head>
+    <body>
+
+        <table id="bodyCV">
+          <tr>
+            <td class="tableHeader tableHeaderHeight">
+              <p>Europass</p>
+              <p>Curriculum vitae</p>
+              <p class="importantParagraph">Personal information</p>
+            </td>
+            <td class="spacer1">&nbsp;&nbsp;</td>
+            <td class="spacer2 separator tableHeaderHeight"></td>
+            <td class="spacer2 tableHeaderHeight">&nbsp;&nbsp;</td>
+            <td class="tableHeaderHeight" id="foto"><img src="{% static 'imgs/'|add:cv.foto %}" alt="Foto" /> </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Surname(s) / First name(s)</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="name">{{ person.firstName }} {{ person.lastName }}</td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Address(es)</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="address">
+                {{ personAddress.street }}, {{ personAddress.cp }}, {{ personAddress.local }}, {{ personAddress.country }}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Telephone(s)</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="phone">
+                +{{ personContact.countryPrefix }} {{ personContact.phone }}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Fax(es)</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="fax">
+                +{{ personContact.countryPrefix }} {{ personContact.fax }}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">E-mail(s)</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="email">
+                {% for email in personEmails %}
+                    {{ email.type }}: {{ email.email }}<br>
+                {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Nationality(-ies)</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="nationality">
+                {{ person.nationality }}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Date of birth</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="birthdate">
+                {{ person.birthdate }}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Gender</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="gender">
+                {% if person.gender == 'F' %}
+                    Female
+                {% else %}
+                    Male
+                {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="spacer3">
+              <p class="importantParagraph">Desired employment /<br>Occupational field</p>
+            </td>
+            <td class="spacer1 spacer3"></td>
+            <td class="spacer2 spacer3 separator">&nbsp;</td>
+            <td class="spacer2 spacer3"></td>
+            <td class="fieldsValue spacer3" id="desiredEmploy"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Work experience</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Dates</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="wexpDates">
+                {{ position.startMonth }} {{ position.startYear }} - {{ position.endMonth }} {{ position.endYear }}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Occupation or position held</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="occupation">
+                {{ position.occupation }}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Main activities and responsibilities</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="activities">
+                {% for activity in activities %}
+                    {{ activity.designation }} for {{ activity.time }}<br>
+                {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Name and address of employer</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="employer">
+                {{ employer.name }} <br/>
+                {{ employer.address.street }}, {{ employer.address.cp }}, {{ employer.address.local }}, {{ employer.address.country }}
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldsHeader">Type of business or sector</td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td class="fieldsValue" id="businessSector">
+                {{ position.businessSector }}
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="spacer1"></td>
+            <td class="spacer2 separator">&nbsp;</td>
+            <td class="spacer2"></td>
+            <td></td>
+          </tr>
+        </table>
+
+    </body>
+</html>
