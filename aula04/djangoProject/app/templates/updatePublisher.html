@@ -1,0 +1,22 @@
+{% block content %}
+    <h1>Update Publishers</h1>
+    {% if error %}
+        <p style="color: red">Error: Insert a query term.</p>
+    {% elif success %}
+        <p style="color: green">Success!</p>
+    {% endif %}
+
+    <form action="." method="post">
+        {% csrf_token %}
+        <p>Publishers: </p>
+        {% for pub in publishers %}
+            <ul>
+                <li>Name: <input type="text" name="name___{{ pub.id }}" value="{{ pub.name }}"></li>
+                <li>City: <input type="text" name="city___{{ pub.id }}" value="{{ pub.city }}"></li>
+                <li>Country: <input type="text" name="country___{{ pub.id }}" value="{{ pub.country }}"></li>
+                <li>Website: <input type="text" name="website___{{ pub.id }}" value="{{ pub.website }}"></li>
+            </ul>
+        {% endfor %}
+        <input type="submit" value="Update">
+    </form>
+{% endblock %}

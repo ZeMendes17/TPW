@@ -12,7 +12,7 @@
         <p>Date:</p><input type="date" name="date" >
         <p>Authors: </p>
         {% for author in authors %}
-            <input type="checkbox" name="author" value="{{ author }}"> {{ author.name }} </br>
+            <input type="checkbox" name="authors" value="{{ author }}"> {{ author.name }} </br>
         {% endfor %}
         <p>Publisher:</p>
         <select name="publisher">

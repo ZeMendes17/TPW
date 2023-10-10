@@ -121,16 +121,119 @@ def insertPublisher(request):
 
 def insertBook(request):
     if request.method == 'GET':
-        return render(request, 'insertBook.html', {'authors': Author.objects.all(), 'publishers': Publisher.objects.all()})
+        return render(request, 'insertBook.html',
+                      {'authors': Author.objects.all(), 'publishers': Publisher.objects.all()})
 
     if 'title' in request.POST and 'date' in request.POST and 'authors' in request.POST and 'publisher' in request.POST:
+        print("ola")
         title = request.POST['title']
         date = request.POST['date']
-        authors = request.POST.getlist('authors')
-        publisher = request.POST['publisher']
-        if title and date and authors and publisher:
-            b = Book(title=title, date=date, publisher=publisher, authors=authors)
+        au = request.POST.getlist('authors')
+        pub = request.POST['publisher']
+        pub = Publisher.objects.get(name=pub)
+        if title and date and au and pub:
+            b = Book.objects.create(title=title, date=date, publisher=pub)
+            for a in au:
+                a = Author.objects.get(name=a)
+                b.authors.add(a)
             b.save()
             return render(request, 'insertBook.html', {'success': True})
         else:
             return render(request, 'insertBook.html', {'error': True})
+    else:
+        print("ola2")
+        return render(request, 'insertBook.html', {'error': False})
+
+
+def updateAuthor(request):
+    if request.method == 'GET':
+        return render(request, 'updateAuthor.html', {'authors': Author.objects.all()})
+
+    for a in Author.objects.all():
+        if ("name___" + str(a.id)) in request.POST and ("email___" + str(a.id)) in request.POST:
+            name = request.POST["name___" + str(a.id)]
+            email = request.POST["email___" + str(a.id)]
+            if name and email:
+                if a.name != name:
+                    a.name = name
+                    a.save()
+                if a.email != email:
+                    a.email = email
+                    a.save()
+
+            else:
+                return render(request, 'updateAuthor.html', {'error': True, 'authors': Author.objects.all()})
+        else:
+            return render(request, 'updateAuthor.html', {'error': True, 'authors': Author.objects.all()})
+
+    return render(request, 'updateAuthor.html', {'success': True, 'authors': Author.objects.all()})
+
+
+def updatePublisher(request):
+    if request.method == 'GET':
+        return render(request, 'updatePublisher.html', {'publishers': Publisher.objects.all()})
+
+    for p in Publisher.objects.all():
+        if ("name___" + str(p.id)) in request.POST and ("city___" + str(p.id)) in request.POST and (
+                "country___" + str(p.id)) in request.POST and ("website___" + str(p.id)) in request.POST:
+            name = request.POST["name___" + str(p.id)]
+            city = request.POST["city___" + str(p.id)]
+            country = request.POST["country___" + str(p.id)]
+            website = request.POST["website___" + str(p.id)]
+            if name and city and country and website:
+                if p.name != name:
+                    p.name = name
+                    p.save()
+                if p.city != city:
+                    p.city = city
+                    p.save()
+                if p.country != country:
+                    p.country = country
+                    p.save()
+                if p.website != website:
+                    p.website = website
+                    p.save()
+            else:
+                return render(request, 'updatePublisher.html', {'error': True, 'publishers': Publisher.objects.all()})
+        else:
+            return render(request, 'updatePublisher.html', {'error': True, 'publishers': Publisher.objects.all()})
+
+    return render(request, 'updatePublisher.html', {'success': True, 'publishers': Publisher.objects.all()})
+
+
+def updateBook(request):
+    if request.method == 'GET':
+        return render(request, 'updateBook.html', {'books': Book.objects.all(), 'publishers': Publisher.objects.all()})
+
+    print(request.POST['date___1'])
+    print(request.POST['title___1'])
+    for b in Book.objects.all():
+        if ("title___" + str(b.id)) in request.POST and ("date___" + str(b.id)) in request.POST and (
+                "authors___" + str(b.id)) in request.POST and ("publisher___" + str(b.id)) in request.POST:
+            title = request.POST["title___" + str(b.id)]
+            date = request.POST["date___" + str(b.id)]
+            au = request.POST.getlist("authors___" + str(b.id))
+            pub = request.POST["publisher___" + str(b.id)]
+            pub = Publisher.objects.get(name=pub)
+            if title and date and au and pub:
+                if b.title != title:
+                    b.title = title
+                    b.save()
+                if b.date != date:
+                    b.date = date
+                    b.save()
+                if b.publisher != pub:
+                    b.publisher = pub
+                    b.save()
+                if b.authors != au:
+                    b.authors.clear()
+                    for a in au:
+                        a = Author.objects.get(name=a)
+                        b.authors.add(a)
+                    b.save()
+            else:
+                return render(request, 'updateBook.html', {'error': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all()})
+        else:
+            return render(request, 'updateBook.html', {'error': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all()})
+
+    return render(request, 'updateBook.html', {'success': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all()})
