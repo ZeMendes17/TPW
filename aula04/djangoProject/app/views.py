@@ -211,27 +211,26 @@ def updateBook(request):
             date = request.POST["date___" + str(b.id)]
             authList = []
             for auth in Author.objects.all():
-                if ("author___" + str(b.id) + "___" + str(auth.id)) in request.POST:
+                if ("authors___" + str(b.id) + "___" + str(auth.id)) in request.POST:
                     authList.append(auth)
             pub = request.POST["publisher___" + str(b.id)]
             pub = Publisher.objects.get(id=pub)
             if title and date and authList and pub:
-                print(title, date, authList, pub)
-               # if b.title != title:
-               #     b.title = title
-               #     b.save()
-               # if b.date != date:
-               #     b.date = date
-               #     b.save()
-               # if b.publisher != pub:
-               #     b.publisher = pub
-               #     b.save()
-               # if b.authors != authList:
-               #     b.authors.clear()
-               #     for a in authList:
-               #         a = Author.objects.get(name=a)
-               #         b.authors.add(a)
-               #     b.save()
+                if b.title != title:
+                    b.title = title
+                    b.save()
+                if b.date != date:
+                    b.date = date
+                    b.save()
+                if b.publisher != pub:
+                    b.publisher = pub
+                    b.save()
+                if b.authors != authList:
+                    b.authors.clear()
+                    for a in authList:
+                        a = Author.objects.get(name=a)
+                        b.authors.add(a)
+                    b.save()
             else:
                 return render(request, 'updateBook.html', {'error': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all(), 'authors': Author.objects.all()})
         else:

@@ -13,7 +13,7 @@
             <ul>
                 <li>Title: <input type="text" name="title___{{ book.id }}" value="{{ book.title }}"></li>
                 <li>Date: <input type="date" name="date___{{ book.id }}" value="{{ book.date|date:"Y-m-d" }}"></li>
-                <select name="publisher___{{ book.publisher.id }}">
+                <select name="publisher___{{ book.id }}">
                     {% for publisher in publishers %}
                         {% if publisher.id == book.publisher.id %}
                             <option value="{{ publisher.id }}" selected>{{ publisher.name }}</option>
