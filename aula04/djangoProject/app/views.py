@@ -203,37 +203,38 @@ def updatePublisher(request):
 
 def updateBook(request):
     if request.method == 'GET':
-        return render(request, 'updateBook.html', {'books': Book.objects.all(), 'publishers': Publisher.objects.all()})
+        return render(request, 'updateBook.html', {'books': Book.objects.all(), 'publishers': Publisher.objects.all(), 'authors': Author.objects.all()})
 
-    print(request.POST['date___1'])
-    print(request.POST['title___1'])
     for b in Book.objects.all():
-        if ("title___" + str(b.id)) in request.POST and ("date___" + str(b.id)) in request.POST and (
-                "authors___" + str(b.id)) in request.POST and ("publisher___" + str(b.id)) in request.POST:
+        if ("title___" + str(b.id)) in request.POST and ("date___" + str(b.id)) in request.POST and ("publisher___" + str(b.id)) in request.POST:
             title = request.POST["title___" + str(b.id)]
             date = request.POST["date___" + str(b.id)]
-            au = request.POST.getlist("authors___" + str(b.id))
+            authList = []
+            for auth in Author.objects.all():
+                if ("author___" + str(b.id) + "___" + str(auth.id)) in request.POST:
+                    authList.append(auth)
             pub = request.POST["publisher___" + str(b.id)]
-            pub = Publisher.objects.get(name=pub)
-            if title and date and au and pub:
-                if b.title != title:
-                    b.title = title
-                    b.save()
-                if b.date != date:
-                    b.date = date
-                    b.save()
-                if b.publisher != pub:
-                    b.publisher = pub
-                    b.save()
-                if b.authors != au:
-                    b.authors.clear()
-                    for a in au:
-                        a = Author.objects.get(name=a)
-                        b.authors.add(a)
-                    b.save()
+            pub = Publisher.objects.get(id=pub)
+            if title and date and authList and pub:
+                print(title, date, authList, pub)
+               # if b.title != title:
+               #     b.title = title
+               #     b.save()
+               # if b.date != date:
+               #     b.date = date
+               #     b.save()
+               # if b.publisher != pub:
+               #     b.publisher = pub
+               #     b.save()
+               # if b.authors != authList:
+               #     b.authors.clear()
+               #     for a in authList:
+               #         a = Author.objects.get(name=a)
+               #         b.authors.add(a)
+               #     b.save()
             else:
-                return render(request, 'updateBook.html', {'error': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all()})
+                return render(request, 'updateBook.html', {'error': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all(), 'authors': Author.objects.all()})
         else:
-            return render(request, 'updateBook.html', {'error': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all()})
+            return render(request, 'updateBook.html', {'error': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all(), 'authors': Author.objects.all()})
 
-    return render(request, 'updateBook.html', {'success': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all()})
+    return render(request, 'updateBook.html', {'success': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all(), 'authors': Author.objects.all()})
