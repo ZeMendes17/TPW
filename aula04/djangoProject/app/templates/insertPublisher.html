@@ -1,0 +1,17 @@
+{% block content %}
+    <h1>Insert a Publisher</h1>
+    {% if error %}
+        <p style="color: red">Error: Insert a query term.</p>
+    {% elif success %}
+        <p style="color: green">Success!</p>
+    {% endif %}
+
+    <form action="." method="post">
+        {% csrf_token %}
+        <p>Name:</p><input type="text" name="name">
+        <p>City:</p><input type="text" name="city" >
+        <p>Country:</p><input type="text" name="country">
+        <p>Website:</p><input type="text" name="website"></br>
+        <input type="submit" value="Insert">
+    </form>
+{% endblock %}

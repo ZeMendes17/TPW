@@ -1,0 +1,16 @@
+{% block content %}
+    <p>Search by: <strong>{{ query }}</strong></p>
+    {% if authors %}
+        <p>Found {{ authors|length }} author {{ authors|pluralize }}.</p>
+        <ul>
+            {% for au in authors %}
+                <li>{{ au.name }}</li>
+                <ul>
+                    <li>{{ au.email }}</li>
+                </ul>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books found.</p>
+    {% endif %}
+{% endblock %}
