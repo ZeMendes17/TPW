@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from app.models import Book, Author, Publisher
+from app.forms import BookQueryForm, AuthorQueryForm, ListBooksByForm, InsertAuthorForm
 
 
 # Create your views here.
@@ -237,3 +238,57 @@ def updateBook(request):
             return render(request, 'updateBook.html', {'error': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all(), 'authors': Author.objects.all()})
 
     return render(request, 'updateBook.html', {'success': True, 'books': Book.objects.all(), 'publishers': Publisher.objects.all(), 'authors': Author.objects.all()})
+
+
+def bookquery(request):
+    if request.method == 'POST':
+        form = BookQueryForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            books = Book.objects.filter(title__icontains=query)
+            return render(request, 'booklist.html', {'books': books, 'query': query})
+    else:
+        form = BookQueryForm()
+    return render(request, 'bookquery.html', {'form': form})
+
+
+def authorquery(request):
+    if request.method == 'POST':
+        form = AuthorQueryForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            authors = Author.objects.filter(name__icontains=query)
+            return render(request, 'authorlist.html', {'authors': authors, 'query': query})
+    else:
+        form = AuthorQueryForm()
+    return render(request, 'bookquery.html', {'form': form})
+
+
+def bookauthpubquery(request):
+    if request.method == 'POST':
+        form = ListBooksByForm(request.POST)
+        if form.is_valid():
+            author_name = form.cleaned_data['author_name']
+            publisher_name = form.cleaned_data['publisher_name']
+            books = Book.objects.filter(authors__name__icontains=author_name, publisher__name__icontains=publisher_name)
+            return render(request, 'booklist.html', {'books': books, 'author': author_name, 'publisher': publisher_name})
+    else:
+        form = ListBooksByForm()
+    return render(request, 'bookquery.html', {'form': form})
+
+
+def insertauthorform(request):
+    if request.method == 'POST':
+        form = InsertAuthorForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            if name and email:
+                a = Author(name=name, email=email)
+                a.save()
+                return render(request, 'insert.html', {'success': True, 'form': InsertAuthorForm()})
+            else:
+                return render(request, 'insert.html', {'error': True, 'form': InsertAuthorForm()})
+    else:
+        form = InsertAuthorForm()
+    return render(request, 'insert.html', {'form': form})
