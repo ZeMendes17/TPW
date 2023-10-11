@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from app.models import Book, Author, Publisher
-from app.forms import BookQueryForm, AuthorQueryForm, ListBooksByForm, InsertAuthorForm
+from app.forms import BookQueryForm, AuthorQueryForm, ListBooksByForm, InsertAuthorForm, InsertPublisherForm, InsertBookForm
 
 
 # Create your views here.
@@ -291,4 +291,45 @@ def insertauthorform(request):
                 return render(request, 'insert.html', {'error': True, 'form': InsertAuthorForm()})
     else:
         form = InsertAuthorForm()
+    return render(request, 'insert.html', {'form': form})
+
+
+def insertpublisherform(request):
+    if request.method == 'POST':
+        form = InsertPublisherForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            city = form.cleaned_data['city']
+            country = form.cleaned_data['country']
+            website = form.cleaned_data['website']
+            if name and city and country and website:
+                p = Publisher(name=name, city=city, country=country, website=website)
+                p.save()
+                return render(request, 'insert.html', {'success': True, 'form': InsertPublisherForm()})
+            else:
+                return render(request, 'insert.html', {'error': True, 'form': InsertPublisherForm()})
+    else:
+        form = InsertPublisherForm()
+    return render(request, 'insert.html', {'form': form})
+
+
+def insertbookform(request):
+    if request.method == 'POST':
+        form = InsertBookForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            date = form.cleaned_data['date']
+            publisher = form.cleaned_data['publisher']
+            authors = form.cleaned_data['author']
+            if title and date and publisher and authors:
+                b = Book(title=title, date=date, publisher=publisher)
+                b.save()
+                for a in authors:
+                    b.authors.add(a)
+                b.save()
+                return render(request, 'insert.html', {'success': True, 'form': InsertBookForm()})
+            else:
+                return render(request, 'insert.html', {'error': True, 'form': InsertBookForm()})
+    else:
+        form = InsertBookForm()
     return render(request, 'insert.html', {'form': form})

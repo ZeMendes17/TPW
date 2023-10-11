@@ -43,4 +43,6 @@ urlpatterns = [
     path('authorquery/', views.authorquery, name='authorquery'),
     path('bookauthpubquery/', views.bookauthpubquery, name='bookauthpubquery'),
     path('insertauthorform/', views.insertauthorform, name='insertauthorform'),
+    path('insertpublisherform/', views.insertpublisherform, name='insertpublisherform'),
+    path('insertbookform/', views.insertbookform, name='insertbookform'),
 ]
