@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authors By Publisher</title>
+</head>
+<body>
+<h1>Authors that published on <b>{{ publisher.name }}</b></h1>
+{% for author in authors %}
+    <p>{{ author.name }}</p>
+{% endfor %}
+</body>
+</html>

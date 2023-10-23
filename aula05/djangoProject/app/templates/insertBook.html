@@ -1,0 +1,25 @@
+{% block content %}
+    <h1>Insert a Book</h1>
+    {% if error %}
+        <p style="color: red">Error: Insert a query term.</p>
+    {% elif success %}
+        <p style="color: green">Success!</p>
+    {% endif %}
+
+    <form action="." method="post">
+        {% csrf_token %}
+        <p>Title:</p><input type="text" name="title">
+        <p>Date:</p><input type="date" name="date" >
+        <p>Authors: </p>
+        {% for author in authors %}
+            <input type="checkbox" name="authors" value="{{ author }}"> {{ author.name }} </br>
+        {% endfor %}
+        <p>Publisher:</p>
+        <select name="publisher">
+            {% for publisher in publishers %}
+                <option value="{{ publisher }}">{{ publisher.name }}</option>
+            {% endfor %}
+        </select></br>
+        <input type="submit" value="Insert">
+    </form>
+{% endblock %}

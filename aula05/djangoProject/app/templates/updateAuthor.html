@@ -1,0 +1,20 @@
+{% block content %}
+    <h1>Update Authors</h1>
+    {% if error %}
+        <p style="color: red">Error: Insert a query term.</p>
+    {% elif success %}
+        <p style="color: green">Success!</p>
+    {% endif %}
+
+    <form action="." method="post">
+        {% csrf_token %}
+        <p>Authors: </p>
+        {% for author in authors %}
+            <ul>
+                <li>Name: <input type="text" name="name___{{ author.id }}" value="{{ author.name }}"></li>
+                <li>Email: <input type="text" name="email___{{ author.id }}" value="{{ author.email }}"></li>
+            </ul>
+        {% endfor %}
+        <input type="submit" value="Update">
+    </form>
+{% endblock %}

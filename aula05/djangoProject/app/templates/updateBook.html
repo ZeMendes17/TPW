@@ -1,0 +1,38 @@
+{% block content %}
+    <h1>Update Books</h1>
+    {% if error %}
+        <p style="color: red">Error: Insert a query term.</p>
+    {% elif success %}
+        <p style="color: green">Success!</p>
+    {% endif %}
+
+    <form action="." method="post">
+        {% csrf_token %}
+        <p>Books: </p>
+        {% for book in books %}
+            <ul>
+                <li>Title: <input type="text" name="title___{{ book.id }}" value="{{ book.title }}"></li>
+                <li>Date: <input type="date" name="date___{{ book.id }}" value="{{ book.date|date:"Y-m-d" }}"></li>
+                <select name="publisher___{{ book.id }}">
+                    {% for publisher in publishers %}
+                        {% if publisher.id == book.publisher.id %}
+                            <option value="{{ publisher.id }}" selected>{{ publisher.name }}</option>
+                        {% else %}
+                            <option value="{{ publisher.id }}">{{ publisher.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <li>Authors:</li>
+                {% for author in authors %}
+                    {% if author in book.authors.all %}
+                        <li><input type="checkbox" name="authors___{{ book.id }}___{{ author.id }}" value="{{ author.id }}" checked>{{ author.name }}</li>
+                    {% else %}
+                        <li><input type="checkbox" name="authors___{{ book.id }}___{{ author.id }}" value="{{ author.id }}">{{ author.name }}</li>
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        {% endfor %}
+        <input type="submit" value="Update">
+    </form>
+{% endblock %}

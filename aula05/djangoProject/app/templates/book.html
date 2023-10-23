@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+</head>
+<body>
+<h1>{{ book.title }}</h1>
+<p><b>Date: </b>{{ book.date }}</p>
+<p><b>Author: </b>
+{% for auth in book.authors.all %}
+    {{ auth.name }}
+    {% if not forloop.last %}, {% endif %}
+{% endfor %}
+</p>
+<p><b>Publisher: </b>{{ book.publisher }}</p>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Publishers</title>
+</head>
+<body>
+    <h1>Publishers</h1>
+    {% for publisher in publishers %}
+        <a href="{% url 'publisher' publisher.id %}">{{ publisher.name }}</a>
+        <a href="{% url 'authorsByPublisher' publisher.id %}">Authors</a></br>
+    {% endfor %}
+</body>
+</html>

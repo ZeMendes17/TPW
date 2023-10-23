@@ -1,0 +1,15 @@
+{% block content %}
+    <h1>Insert an Author</h1>
+    {% if error %}
+        <p style="color: red">Error: Insert a query term.</p>
+    {% elif success %}
+        <p style="color: green">Success!</p>
+    {% endif %}
+
+    <form action="." method="post">
+        {% csrf_token %}
+        <p>Name:</p><input type="text" name="name">
+        <p>Email:</p><input type="text" name="email" > </br>
+        <input type="submit" value="Insert">
+    </form>
+{% endblock %}
