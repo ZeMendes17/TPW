@@ -10,6 +10,29 @@
 \usepackage{ulem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
 
 \def\ojoin{\setbox0=\hbox{$\bowtie$}%
   \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
@@ -631,5 +654,546 @@ ou fora da “app” (normalmente uma pasta denominada de "static").
   Para usar basta usar a tag \{\% load static \%\} e depois
   referenciar o ficheiro.
 \end{flushleft}
+
+\subsection{Modelos - Camada de Base de Dados Django}
+
+\subsubsection{Modelo}
+
+\begin{flushleft}
+  \begin{itemize}
+    \item MTV - Model-Template-View;
+    \item Modelo
+    \begin{itemize}
+      \item Consiste na camada de acesso aos dados - "Data Access Layer";
+      \item Esta camada permite definir, em relação aos dados:
+      o \textbf{Acesso}, a \textbf{Validação}, o \textbf{Comportamento} e as \textbf{Relações} entre os dados;
+    \end{itemize}
+  \end{itemize}
+\end{flushleft}
+
+\pagebreak
+
+\subsubsection{Configuração da Base de Dados}
+
+\begin{flushleft}
+  No ficheiro "settings.py" podemos configurar a base de dados,
+  basta procurar pela variável \textbf{DATABASES} e definir os parâmetros
+  \textbf{ENGINE}, \textbf{NAME}, \textbf{USER}, \textbf{PASSWORD},
+  \textbf{HOST}, \textbf{PORT}.
+
+  Por defeito, o Django usa o SQLite3.
+\end{flushleft}
+
+\subsubsection{Criação de um modelo}
+
+\begin{flushleft}
+  A criação de modelos vai acontecer no ficheiro "app/models.py".
+  Para criar um modelo basta criar uma classe que herde de \textbf{models.Model}.
+  Os atributos da classe são os campos da tabela.
+
+  \vspace{2mm}
+
+  Para cada atributo das classes é instanciado um
+  objeto tipo “Field” e/ou subtipo, como: \textbf{CharField},
+  \textbf{DataField}, etc.
+
+  Alguns atributos, representam a criação de relações
+  entre as classes, tendo como efeito a criação de
+  colunas com chaves estrangeiras (\textbf{1:1}, \textbf{1:M}, \textbf{M:1}) ou
+  de tabelas de associação (\textbf{M:N})
+
+  \vspace{3mm}
+
+  \textbf{Relações entre classes:}
+
+  \begin{itemize}
+    \item \textbf{1:M e M:1}
+    \begin{itemize}
+      \item Conseguida com o atributo \textbf{models.ForeignKey};
+      \item \uline{Exemplo}: Publisher (1) : (M) Book ou Book (M) : (1) Publisher
+      O atributo é colocado na classe que representa o lado “M” da relação, neste caso a classe Book;
+    \end{itemize}
+
+    \item \textbf{1:1} (único)
+    \begin{itemize}
+      \item Conseguida com o atributo \textbf{models.OneToOneField};
+      \item \uline{Exemplo}: Book (1) : (1) Place
+      O atributo "deve" ser colocado na classe que mais necessita da outra, neste caso a classe Book;
+    \end{itemize}
+
+    \item \textbf{M:N}
+    \begin{itemize}
+      \item Conseguida com o atributo \textbf{models.ManyToManyField};
+      \item \uline{Exemplo}: Book (M) : (N) Author
+      O atributo “deve” ser colocado na classe que mais “necessita” da
+outra, como na relação de 1:1 
+    \end{itemize}
+  \end{itemize}
+
+  A classe base “Model”, donde são derivadas todas as
+  classes do modelo, possui todos os mecanismos
+  necessários para interagir com a base de dados.
+
+  Cada classe derivada é implementada na BD na
+  forma de uma tabela e os seus atributos são
+  implementados na forma de colunas (campos) da
+  tabela.
+
+  Com vista à ativação do modelo, a aplicação web, “app”, deve
+  ser incluída na variável \textbf{INSTALLE\_APPS} do ficheiro
+  “settings.py”. Caso a aplicação já esteja a ser incluída, de
+  forma indireta, não é necessário.
+\end{flushleft}
+
+\pagebreak
+
+\subsubsection{Comandos na criação de um modelo}
+
+\begin{flushleft}
+  \textbf{python manage.py check} - valida o modelo (sintaxe e lógica)
+
+  \textbf{python manage.py makemigrations} - produz código de migração (na
+  pasta \uline{app/migrations} devemos apagar tudo menos o ficheiro \uline{\_\_init\_\_.py})
+  
+  \textbf{python manage.py sqlmigrate app 0001} - mostra o SQL gerado pela migração
+
+  \textbf{python manage.py migrate} - produz as tabelas na BD
+\end{flushleft}
+
+\subsubsection{Gestão dos Dados}
+
+\begin{flushleft}
+  A plataforma Django possui um mecanismo
+  que possibilita uma gestão muito facilitada de
+  todos os dados pertencentes ao modelo de
+  dados: o Django Admin Site
+
+  A URL = \textbf{http://localhost:{port}/admin} dá acesso
+  à área administrativa a qual permite, por
+  defeito, gerir os utilizadores do site
+
+  Nesta érea, também é possível aceder e gerir
+  os dados definidos no modelo
+
+  Para tal, é necessário no ficheiro "urls.py" da
+  aplicação adicionar:
+  \begin{itemize}
+    \item o import "\textbf{from django.contrib import admin}"
+    \item a linha "\textbf{path('admin/', admin.site.urls)}"
+  \end{itemize}
+
+  Também é necessário registar as classes que se pretende gerir:
+  \begin{itemize}
+    \item o mesmo import que em cima
+    \item importar as classes que se pretende gerir de "\textbf{app.models}"
+    \item adicioná-los: "\textbf{admin.site.register(Class)}"
+  \end{itemize}
+
+  Por fim é necessário criar a conta de administração, com o comando:
+  \textbf{python manage.py createsuperuser}
+
+  \vspace{2mm}
+
+  \textbf{Programando:}
+  \begin{itemize}
+    \item Inserir um objeto:
+    \begin{lstlisting}
+      a = Author(name="Jose", email="mendes.j@ua.pt")
+      a.save()
+    \end{lstlisting}
+
+    \item Modificar um objeto:
+    \begin{lstlisting}
+      a.email = "ze.mendes@ua.pt"
+      a.save()
+    \end{lstlisting}
+
+    \item Selecionar todos os objetos:
+    \begin{lstlisting}
+      Author.objects.all()
+    \end{lstlisting}
+
+    \pagebreak
+
+    \item Filtrar objetos (por nome):
+    \begin{lstlisting}
+      Autor.objects.filter(name="Jose")
+    \end{lstlisting}
+
+    \item Filtrar por nome e por email:
+    \begin{lstlisting}
+      Autor.objects.filter(name="Jose", email="mendes.j@ua.pt")
+    \end{lstlisting}
+
+    \item Filtrar por nome parecido:
+    \begin{lstlisting}
+      Autor.objects.filter(name__contains="Jose")  
+    \end{lstlisting}
+
+    \item Aceder a um único objeto:
+    \begin{lstlisting}
+      Autor.objects.get(email="autor1@gmail.com")   
+    \end{lstlisting}
+
+    \item Ordenação:
+    \begin{lstlisting}
+      Publisher.objects.order_by("city", "country")
+    \end{lstlisting}
+
+    \item Filtragem e Ordenação:
+    \begin{lstlisting}
+      Publisher.objects.filter(country="Portugal").order_by("-city")
+    \end{lstlisting}
+
+    \item Selecionar os primeiros resultados:
+    \begin{lstlisting}
+      Publisher.objects.order_by("city", "country")[0]
+      Publisher.objects.order_by("city", "country")[0:4]
+    \end{lstlisting}
+    \begin{itemize}
+      \item \textbf{Nota:} Não são permitidos índices negativos.
+    \end{itemize}
+
+    \item Remover um objeto:
+    \begin{lstlisting}
+      a = Author.objects.get(email="mendes.j@ua.pt").delete()
+    \end{lstlisting}
+  \end{itemize}
+\end{flushleft}
+
+\pagebreak
+
+\subsection{Mandar e Receber Dados - Forms}
+
+\subsubsection{Receber Dados}
+
+\begin{flushleft}
+  O objeto \textbf{request} do tipo \textbf{HttpRequest} permite aceder
+  a um vasto conjunto de dados, recebidos pelo servidor web.
+
+  Estes dados podem ser diretamente acessados através de alguns métodos e atributos
+  como: \textbf{request.path}, \textbf{request.get\_host()}, \textbf{request.is\_secure()}
+
+  Ou podem ser acessados pelo dicionário \textbf{request.META}, que contém
+  toda a informação presente no cabeçalho do protocolo HTTP.
+  
+  \vspace{2mm}
+  \textbf{Exemplo} mostrando todos os dados presentes no cabeçalho HTTP:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{12}
+  \end{center}
+\end{flushleft}
+
+\subsubsection{Forms}
+
+\begin{flushleft}
+  Por excelência, os forms são os elementos HTML para enviar e receber dados
+  do cliente para o servidor.
+
+  Do lado do cliente (browser), o Form pode usar os métodos \textbf{GET} ou \textbf{POST} para
+  enviar os dados que possui.
+
+  Do lado do servidor, a view chamada pode usar os dicionários "\textbf{request.GET}" e "\textbf{request.POST}"
+  para aceder aos dados recebidos.
+\end{flushleft}
+
+\begin{flushleft}
+  \textbf{Exemplo:} Form para pesquisar livros por título
+
+  \vspace{2mm}
+  Definir o URL:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{13}
+  \end{center}
+
+  \pagebreak
+
+  Definir a view:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{14}
+  \end{center}
+
+  Definir o template para pesquisa:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{15}
+  \end{center}
+
+  Definir o template para mostrar os resultados:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{16}
+  \end{center}
+\end{flushleft}
+
+\pagebreak
+
+\subsubsection{Classes Form e Django Forms}
+
+\begin{flushleft}
+  A classe \textbf{Form} descreve um formulário e determina como ele se comporta
+  e como é apresentado no browser.
+
+  Os campos da classe \textbf{Form} mapeiam para o formulário HTML como elementos
+  \textbf{$<$input$>$}.
+  \begin{itemize}
+    \item Eles próprios são classes, que gerem os dados de um formulário
+    e fazem a validação quando o formulário é submetido;
+    \item São representados no browser como um "widget" HTML.
+    Cada campo tem um default widget apropriado, mas estes podem ser
+    overriden, se necessário;
+  \end{itemize}
+\end{flushleft}
+
+\subsubsection{Instância de um Form}
+
+\begin{flushleft}
+  Numa instância de uma classe \textbf{Form}, podemos optar por
+  deixar vazio ou pre-popular, por exemplo com:
+  \begin{itemize}
+    \item dados de uma instância de um modelo salvo (como é o caso do Django Admin para editar);
+    \item dados que tenhamos coletado de outras fontes;
+    \item dados recebidos de um submissão anterior de um formulário HTML;
+  \end{itemize}
+
+  O último caso é muito útil, pois permite os utilizadores reenviar informação
+  sem terem que a reescrever.
+\end{flushleft}
+
+\subsubsection{Contruir um Form}
+
+\begin{flushleft}
+  Para contruir um formulário, normalmente escrevemos o código em HTML assim:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{17}
+  \end{center}
+
+  De facto, um formulário é bem mais complexo, incluindo vários campos, tipos de campos,
+  restrições e regras de validação, pelo que seria bom ser mais fácil
+\end{flushleft}
+
+\subsubsection{Criando um Django Form}
+
+\begin{flushleft}
+  Para criar uma classe \textbf{Form} no Django, basta criar uma classe que herde de \textbf{forms.Form},
+  no ficheiro "app/forms.py".
+
+  \begin{center}
+    \includegraphics[scale=0.35]{18}
+  \end{center}
+
+  \pagebreak
+
+  Depois criamos o template onde a class \textbf{Form} vai ser representada:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{19}
+  \end{center}
+
+  Quando renderizado, o formulário vai substituir o template tag \{\{ form \}\}
+  com o label e o input definidos na classe \textbf{Form}.
+
+  \vspace{2mm}
+
+  A view será do tipo:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{20}
+  \end{center}
+\end{flushleft}
+
+\subsubsection*{Os Campos}
+
+\begin{flushleft}
+  Os campos dos dados:
+  \begin{itemize}
+    \item Os dados submetidos com o formulário, usando \textbf{Form Fields}, podem
+    ser validados usando a função \textbf{is\_valid()};
+    \item Depois da validação, os dados podem ser acessados no dicionário
+    \textbf{form.cleaned\_data};
+    \item Os dados no dicionário já estão convertidos para tipos Python para
+    uso imediato;
+  \end{itemize}
+
+  \vspace{2mm}
+
+  \textbf{Exemplo} de Data Fields e a sua representação HTML:
+  \begin{itemize}
+    \item \textbf{BooleanField} - Checkbox Input;
+    \item \textbf{CharField} - Text Input;
+    \item \textbf{IntegerField} ou \textbf{FloatField} - Number Input;
+    \item \textbf{DateField} e \textbf{TimeField} - Text Input;
+    \item \textbf{ChoiceField} - Select;
+    \item \textbf{MultipleChoiceField} - Select Mulriple;
+    \item \textbf{FileField} - File Input;
+  \end{itemize}
+
+  Para já não é o mais aesthetically pleasing, mas corre direito e faz
+  validação automática.
+
+  \pagebreak
+
+  É possível renderizar os Form Fields individualmente:
+
+  \begin{center}
+    \includegraphics[scale=0.3]{21}
+  \end{center}
+\end{flushleft}
+
+\subsection{Autentificação Django}
+
+\begin{flushleft}
+  O Django vem com um sistema de autentificação de utilizadores.
+  Este sistema lida com contas de utilizadores, grupos, permissões e
+  sessões de utilizadores.
+
+  \vspace{2mm}
+
+  Trata de ambos, a autentificação e a autorização.
+  \begin{itemize}
+    \item \textbf{Autentificação} - Verificar que o utilizador é quem diz ser;
+    \item \textbf{Autorização} - Determina o que o utilizador autentificado tem permissão para fazer;
+  \end{itemize}  
+
+  Implementa:
+  \begin{itemize}
+    \item Utilizaddores, grupos e permissões;
+    \item Ferramentas de Forms e view para "loggar" utilizadores ou restringir conteúdo;
+    \item Hashing de passwords;
+  \end{itemize}
+\end{flushleft}
+
+\subsubsection{Autentificação}
+
+\begin{flushleft}
+  Para usar o sistema de autentificação, temos de ver se os seguintes
+  módulos estão incluídos:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{22}
+  \end{center}
+
+  Além disso, a base de dados deve estar iniciada, senão: \textbf{python manage.py migrate}
+\end{flushleft}
+
+\pagebreak
+
+\subsubsection{Criar Login e Logout}
+
+\begin{flushleft}
+  No ficheiro "app/urls.py" devemos adicionar as seguintes linhas:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{23}
+  \end{center}
+
+  Usar o ficheiro "login.html" par criar o template do login, e fazer as seguintes alterações:
+
+  \begin{center}
+    \includegraphics[scale=0.35]{24}
+  \end{center}
+
+  Usar o ficheiro "loginpartial.html" para criar a área se vai mostrar o status do login, 
+  para tal modificamos o ficheiro "layout.html":
+
+  \begin{center}
+    \includegraphics[scale=0.35]{25}
+  \end{center}
+\end{flushleft}
+
+\pagebreak
+
+\subsubsection{Autorização}
+
+\begin{flushleft}
+  A autorização pode ser gerida automaticamente pelo Django, através
+  do objeto "\textbf{request.use}", é possível verificar se um dado
+  utilizador está autentificado e se tem permissão para fazer operações.
+
+  \begin{center}
+    \includegraphics[scale=0.35]{26}
+  \end{center}
+\end{flushleft}
+
+\subsection{Sessões Django}
+
+\subsubsection{Estado}
+
+\begin{flushleft}
+  O protocolo HTTP é um protocolo sem estado (stateless), o que significa
+  que não tem nenhum mecanismo para guardar o estado da conexão e, desta forma,
+  não permite a criação de sessões.
+
+  \vspace{2mm}
+
+  Para tal, alguns mecanismos externos foram desenvolvidos em clientes web e
+  servidores, que permitem guardar o dados do estado em várias conexões HTTP,
+  produzindo sessões artificiais.
+
+  \vspace{2mm}
+  Mecanismos como:
+  \begin{itemize}
+    \item Cookies;
+    \item Ferramentas de alto nível, usando BDs para gerir utilizadores,
+    autentificações e sessões;
+  \end{itemize}
+\end{flushleft}
+
+\subsubsection{Cookies}
+
+\begin{flushleft}
+  Uma cookie é uma peça de informação enviada pelo servidor web para o cliente,
+  o browser, para ser guardada enquanto estão numa conexão.
+
+  \vspace{2mm}
+
+  É possível guardar algum tipo de informação nesta cookie, como o nome do
+  utilizador por exemplo.
+
+  \vspace{2mm}
+
+  Este mecanismo de cookies é bastante usado por quase todos os web sites, mas
+  possui algumas disvantagens:
+  \begin{itemize}
+    \item Salvar cookies no browser não é obrigatório, o que não permite
+    oferecer garantia de um bom serviço;
+    \item Cookies não podem ser usadas para guardar informação importante - não são seguras;
+    \item Os servidores podem ser inibidos, em algum momento, de acessar informação crucial
+    para continuar a interação com o cliente.
+  \end{itemize}
+\end{flushleft}
+
+\pagebreak
+
+\subsubsection{Sessões Django}
+
+\begin{flushleft}
+  O Django oferece um mecanismo de alto nível para o estabelecimento de sessões,
+  o que permite salvar todo o tipo de informações no próprio seervidor. Esta informação
+  é armazenada na base de dados.
+
+  \vspace{2mm}
+
+  Para usar este mecânismo, verifica se as seguintes linhas estão no ficheiro
+  "\textbf{settings.py}".
+
+  \begin{center}
+    \includegraphics[scale=0.35]{27}
+  \end{center}
+
+  O Django gere automaticamente as sessões com os clientes de uma maneira
+  simples e transparente. Utiliza o objeto "\textbf{request.session}" que
+  é um dicionário.
+
+  \begin{center}
+    \includegraphics[scale=0.35]{28}
+  \end{center}
+\end{flushleft}
+
+
 
 \end{document}
