@@ -1194,6 +1194,103 @@ outra, como na relação de 1:1
   \end{center}
 \end{flushleft}
 
+\pagebreak
 
+\section{Produção - Deployment de Aplicações Web}
+
+\subsection{Ambiente de Produção}
+
+\begin{flushleft}
+O ambiente de produção é o ambiente dado pelo computador servidor
+onde a nossa aplicação web vai correr para consumo externo.
+
+Isto inclui:
+\begin{itemize}
+  \item Hardware onde o website vai correr;
+  \item Sistema Operativo (e.g Linux, Windows);
+  \item Runtime das linguagens de programação e frameworks por cima das quais o website é escrito;
+  \item O servidor web usado para servir páginas e outros conteúdos (e.g Apache, Nginx);
+  \item O servidor da aplicação que passa pedidos "dinâmicos" entre a aplicação web e o servidor web;
+  \item Bases de Dados das quais a nossa aplicação depende;
+\end{itemize}
+
+\vspace{2mm}
+
+O computador servidor pode estar localizado fisicamente na nossa empresa e
+conectado à Internet por um link rápido.
+
+\vspace{1mm}
+
+\textbf{OU}
+
+\vspace{1mm}
+
+Usar um computador servidor que está hosted "na cloud".
+\begin{itemize}
+  \item Neste caso, o nosso código corre num computador remota, ou possivelmente
+  um computador "virtual", que é gerido por uma empresa de hosting (data center);
+  \item O servidor remoto normalmente oferece algumu nível garantido de recursos
+  de computação (e.g CPU, RAM, memória de disco, /dots) e conectividade à Internet
+  por um preço fixo;
+\end{itemize}
+
+\end{flushleft}
+
+\subsection{Ambiente de Produção - IaaS}
+
+\begin{flushleft}
+  \textbf{IaaS} - Infrastructure as a Service - é um hardware de computação/networking
+  acessado remotamente, fornecido por um serviço de hosting.
+
+  \vspace{2mm}
+
+  Muitos fornecedores de IaaS oferecem opções para pre-instalar um dado Sistema Operativo,
+  no qual devemos instalar componentes do ambiente de produção.
+
+  \vspace{2mm}
+
+  Outros vendedores permitem selecionar um ambiente pré-configurado, que inclui
+  uma dada web framework, e.g Django, e um web-server setup.
+\end{flushleft}
+
+\pagebreak
+
+\subsection{Ambiente de Produção - PaaS}
+
+\begin{flushleft}
+  \textbf{PaaS} - Platform as a Service - é outro tipo de serviço de hosting onde
+  a plataforma de hosting trata:
+  \begin{itemize}
+    \item de grande parte do ambiente de produção - servidor web, servidor de aplicação,
+    load balancers;
+    \item e da maior parte que precisamos para escalar a nossa aplicação web;
+  \end{itemize}
+
+  PaaS torna o deployment bastante fácil, uma vez que só precisamos de nos concentrar
+  na nossa aplicação web e não em toda a outra infrastrutura do servidor.
+\end{flushleft}
+
+\subsection{Escolher um Serviço de Hosting}
+
+\begin{flushleft}
+  Problemas a ter em conta:
+  \begin{itemize}
+    \item O quão provável é o nosso website estar ocupado e o custo dos dados e
+    os recursos de computação necessários para suportar o tráfego;
+    \item O nível de suporte para escalar horizontalmente (adicionar mais máquinas)
+    e verticalmente (upgrade para m´quinas mais poderosas) e os custos de o fazer;
+    \item Onde o fornecedor tem data centers, e por isso, onde o acesso é mais provável de ser mais rápido;
+    \item O histórico do uptime do fornecedor e a performance do downtime;
+    \item Ferramentas dadas para gerir o site, se são fáceis de usar e se são seguras (e.g SFTP vs FTP);
+    \item Inbuilt Frameworks para monitorizar o servidor;
+    \item Saber os limites. Alguns hosts bloquiam delibradamente certos serviços (e.g email).
+    Outros oferece, um certo número de horas de "live time" em alguns pacotes de preços, ou apenas
+    fornecem uma pequena quantidade de memória;
+    \item Benefícios adicionais. Alguns fornecedores oferecem domain names e suporte para certificados SSL
+    que teriamos, caso contrário, de comprar.
+    \item Se o tier "grátis" que estamos a usar expira ao longo do tempo e se o custo de migração
+    para um tier mais caro significa que seria melhor ter usado outro serviço de hosting desde o início;
+  \end{itemize}
+\end{flushleft}
 
 \end{document}
