@@ -1,3 +1,3 @@
-# TPW_Project_2
+# TPW
 
-2nd Project for TPW class 2023/2024
+Technologies and Web Programming classes of 2023/2024
